@@ -13,17 +13,12 @@ app.use(express.urlencoded({ extended: true }))
 
 const port = process.env.PORT || 5000
 
-app.get("/", (req, res) => {
-    res.send("Server is ready to serve Sir..")
-})
-
 app.use("/api/users", userRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
 
 app.listen(port, () => console.log("Server started on port", port))
-
 
 // POST / api / users - Register a User
 // POST /api/users/auth  - Authenticate a user and get token

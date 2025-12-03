@@ -3,7 +3,7 @@ import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
 
 // @desc Auth user / set token
-// route POST /api/users/auth
+// route POST /api/users/auth -- LOGIN
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
@@ -20,16 +20,12 @@ const authUser = asyncHandler(async (req, res) => {
         res.status(401)
         throw new Error("Invalid Email or Password.")
     }
-
-
     res.status(401)
     throw new Error('Something went wrong')
-
-    res.status(200).json({ message: 'Auth User' })
 })
 
 // @desc Register a new User
-// route POST /api/users
+// route POST /api/users  --  SIGNIN
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
     // Desestruturar o objeto para buscar no DODY (campos INPUT a ser preenchidos)
@@ -65,27 +61,48 @@ const registerUser = asyncHandler(async (req, res) => {
 // route POST /api/users/logout
 // @access Public
 const logoutUser = asyncHandler(async (req, res) => {
-  
-    res.status(200).json({ message: 'Logout User' })
-
+    res.cookie('jwt', '', {
+        httpOnly: true,
+        expires: new Date(0),
+    })
+    res.status(200).json({ message: 'User Logged Out' })
 })
 
 // @desc Get user profile
-// route GET /api/users/profile
+// route GET /api/users/profile  -- Get User Profile after logged
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  
-    res.status(200).json({ message: 'User Profle Infomations' })
-
+    const user = {
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email
+    }
+    res.status(200).json(user)
 })
 
 // @desc Update user profile
 // route PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  
-    res.status(200).json({ message: 'Update User' })
+    const user = await User.findById(req.user._id)
 
+    if (user) {
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+        const updateUser = await user.save()
+        res.status(200).json({
+            _id: updateUser._id,
+            name: updateUser.name,
+            email: updateUser.email
+        })
+    } else {
+        res.status(404)
+        throw new Error("User not found.!")
+    }
 })
 
 export {

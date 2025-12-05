@@ -1,14 +1,16 @@
+import { Outlet } from "react-router-dom"
+import Header from "./components/Header"
+import { Container } from "react-bootstrap"
 
-import './App.css'
 
 function App() {
   
   return (
     <>
-      <h1>Nemoto Frontend Developer</h1>
-      <p className="read-the-docs">
-        Under the Hood
-      </p>
+      <Header />
+      <Container className="my-2">
+         <Outlet />
+     </Container>
     </>
   )
 }

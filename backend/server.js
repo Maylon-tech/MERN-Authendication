@@ -12,13 +12,13 @@ connectDB()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
+// What is this ?????
 app.use(cookieParser())
 
 const port = process.env.PORT || 5000
 
 app.use("/api/users", userRoutes)
-
+// What is this ?????
 app.use(notFound)
 app.use(errorHandler)
 

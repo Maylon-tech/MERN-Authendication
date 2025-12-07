@@ -1,5 +1,5 @@
-
 import { Container, Card, Button } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 
 const Hero = () => {
   return (
@@ -12,13 +12,18 @@ const Hero = () => {
                 This is a boilerplate for MERN authentication that stores a JWT in an GTTP-Only cookie. Is also users Redux Toolkit and the React Boostrap Library.
             </p>
             <div className="d-flex">
-                <Button variant="primary" href='/login' className='me-3'>
+              <LinkContainer to='/login'>              
+                <Button variant="primary" className='me-3'>
                     Sign In
                 </Button>
-                
-                <Button variant="secondary" href='/register'>
+              </LinkContainer>
+              
+              <LinkContainer to='/register'>
+                <Button variant="secondary">
                     Sigh Up
-                </Button>
+                </Button>              
+              </LinkContainer>
+                
             </div>
         </Card>
       </Container>

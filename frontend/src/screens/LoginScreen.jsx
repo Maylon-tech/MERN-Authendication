@@ -6,6 +6,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { useLoginMutation } from "../slices/usersApiSlice"
 import { setCredentials } from "../slices/authSlice"
+import { toast } from 'react-toastify'
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
@@ -33,8 +34,9 @@ const LoginScreen = () => {
           dispatch(setCredentials({ ...res }))
           navigate('/')
 
-        } catch(error) {
-          console.log(error.data.message || error.error)
+        } catch (error) {
+          toast.error(error?.data?.message || error.error)
+          console.log(error?.data?.message || error.error)
         }
     }
 

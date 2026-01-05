@@ -12,7 +12,7 @@ const RegisterScreen = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault()
-        console.log("sbumit")
+        console.log("submit")
     }
 
   return (

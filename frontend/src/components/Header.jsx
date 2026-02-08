@@ -1,34 +1,68 @@
 
-import { Navbar, Nav, Container } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 
-const Header = () => {
+import { useLogoutMutation } from '../slices/usersApiSlice'
+import { logout } from '../slices/authSlice.js'
 
+const Header = () => {
+  const { userInfo } = useSelector((state) => state.auth)
   
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [logoutApiCall] = useLogoutMutation()
+
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap()
+      dispatch('/')
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <header>
-      <Navbar bg='dark' varinat='dark' expand='' collapseOnSelect>
+      <Navbar bg='primary' varinat='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand href='/'>MERN Auth Application</Navbar.Brand>
+            <Navbar.Brand>MERN Auth Application</Navbar.Brand>
           </LinkContainer>
 
             <Navbar.Toggle aria-controls='basic-navbar-nav' />
             <Navbar.Collapse id='basic-navbar-nav'>
                 <Nav className='ms-auto'>
-                  <LinkContainer to='/login'>                  
-                    <Nav.Link>
-                        <FaSignInAlt /> Sign In
-                    </Nav.Link>
-                  </LinkContainer>  
+                  {
+                    userInfo ? (
+                      <>
+                        <NavDropdown title={userInfo.name} id="username" >
+                          <LinkContainer to="/profile">
+                            <NavDropdown.Item>Profile</NavDropdown.Item>
+                          </LinkContainer>
+                          <NavDropdown.Item>Logout</NavDropdown.Item>
+                        </NavDropdown>
+                      </>
+                    ) : (
+                      <>
+                        <LinkContainer to='/login'>                  
+                          <Nav.Link>
+                              <FaSignInAlt /> Sign In
+                          </Nav.Link>
+                        </LinkContainer>  
 
-                  <LinkContainer to='register'>                  
-                    <Nav.Link>
-                        <FaSignOutAlt /> Sign Out
-                    </Nav.Link>
-                  </LinkContainer>
-
+                        <LinkContainer to='register'>                  
+                          <Nav.Link>
+                              <FaSignOutAlt /> Sign Out
+                          </Nav.Link>
+                        </LinkContainer>
+                      </>
+                    )
+                  }                 
                 </Nav>
             </Navbar.Collapse>
         </Container>

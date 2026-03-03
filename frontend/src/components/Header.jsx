@@ -2,7 +2,7 @@
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 
 import { useLogoutMutation } from '../slices/usersApiSlice'

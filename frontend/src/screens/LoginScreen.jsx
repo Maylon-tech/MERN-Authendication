@@ -7,6 +7,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { useLoginMutation } from "../slices/usersApiSlice"
 import { setCredentials } from "../slices/authSlice"
+import Loader from "../components/Loader"
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
@@ -42,7 +43,7 @@ const LoginScreen = () => {
 
   return (
     <FormContainer>
-      <h1 className="">Sign In</h1>
+      <h3>Sign In</h3>
       
       <Form onSubmit={submitHandler}>
         <Form.Group className="my-2" controlId='email'>
@@ -68,6 +69,10 @@ const LoginScreen = () => {
                 
             </Form.Control>
         </Form.Group>
+
+        {
+          isLoading && <Loader />
+        }
 
         <Button
           type='submit'

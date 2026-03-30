@@ -16,6 +16,7 @@ import {
   Route,
   RouterProvider
 } from 'react-router-dom'
+import ProfileScreen from './screens/ProfileScreen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route path='/' index={true} element={<HomeScreen />} />
       <Route path='/login' index={true} element={<LoginScreen />} />
       <Route path='/register' index={true} element={<RegisterScreen />} />
+      <Route path='/profile' index={true} element={<ProfileScreen />} />
     </Route>
   )
 )

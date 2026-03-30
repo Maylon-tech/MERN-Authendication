@@ -18,7 +18,7 @@ const RegisterScreen = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
   
-    const [login, { isLoading }] = useRegisterMutation()
+    const [register, { isLoading }] = useRegisterMutation()
     const { userInfo } = useSelector((state) => state.auth) 
     
   useEffect(() => {
@@ -52,7 +52,7 @@ const RegisterScreen = () => {
         <Form.Group className="my-2" controlId='name'>
             <Form.Label>Name</Form.Label>
             <Form.Control
-                type="email"
+                type="text"
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -96,6 +96,10 @@ const RegisterScreen = () => {
                 
             </Form.Control>
         </Form.Group>
+
+        {
+          isLoading &&<></>
+        }
 
         <Button
           type='submit'

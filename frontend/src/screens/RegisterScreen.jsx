@@ -98,7 +98,7 @@ const RegisterScreen = () => {
         </Form.Group>
 
         {
-          isLoading &&<></>
+          isLoading &&<>Loading the Homepage...</>
         }
 
         <Button

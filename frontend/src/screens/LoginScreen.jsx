@@ -28,17 +28,18 @@ const LoginScreen = () => {
     }, [navigate, userInfo])
   
     const submitHandler = async (e) => {
-        e.preventDefault()
-        console.log("submit")
-        try {
-          const res = await login({ email, password }).unwrap()
-          dispatch(setCredentials({ ...res }))
-          navigate('/')
+      e.preventDefault()
+      
+      console.log("submit")
+      try {
+        const res = await login({ email, password }).unwrap()
+        dispatch(setCredentials({ ...res }))
+        navigate('/')
 
-        } catch (error) {
-          toast.error(error?.data?.message || error.error)
-          console.log(error?.data?.message || error.error)
-        }
+      } catch (error) {
+        toast.error(error?.data?.message || error.error)
+        console.log(error?.data?.message || error.error)
+      }
     }
 
   return (

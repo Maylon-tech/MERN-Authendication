@@ -32,7 +32,7 @@ const LoginScreen = () => {
       
       console.log("submit")
       try {
-        const res = await login({ email, password }).unwrap()
+        const res = await login({ email, password })
         dispatch(setCredentials({ ...res }))
         navigate('/')
 

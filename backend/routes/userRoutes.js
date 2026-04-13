@@ -1,6 +1,6 @@
 import express from 'express'
 import {
-    authUser,
+    loginUser,
     registerUser,
     logoutUser,
     getUserProfile,
@@ -12,7 +12,7 @@ const router = express.Router()
 
  // users from controller - API route for authentication_Login
 router.post("/", registerUser)
-router.post("/auth", authUser)
+router.post("/login", loginUser)
 router.post("/logout", logoutUser)
 router.route('/profile').get(protect, getUserProfile).put(protect, updateUserProfile)
 

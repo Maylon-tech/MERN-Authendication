@@ -1,5 +1,5 @@
 
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap'
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,7 +19,7 @@ const Header = () => {
   const logoutHandler = async () => {
     try {
       await logoutApiCall()
-      dispatch('/')
+      dispatch(logout())
       navigate('/')
     } catch (error) {
       console.log(error)
@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg='primary' varinat='dark' expand='lg' collapseOnSelect>
+      <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>MERN Auth Application</Navbar.Brand>
@@ -43,8 +43,7 @@ const Header = () => {
                         <NavDropdown title={userInfo.name} id="username" >
                           <LinkContainer to="/profile">
                             <NavDropdown.Item>Profile</NavDropdown.Item>
-                          </LinkContainer>
-                          
+                          </LinkContainer>                          
                           <NavDropdown.Item
                             onClick={logoutHandler}
                           >

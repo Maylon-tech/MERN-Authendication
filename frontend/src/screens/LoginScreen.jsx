@@ -30,11 +30,11 @@ const LoginScreen = () => {
     const submitHandler = async (e) => {
       e.preventDefault()
       
-      console.log("submit")
+      console.log("User Sign In right NOW..!")
       try {
         const res = await login({ email, password })
         dispatch(setCredentials({ ...res }))
-        navigate('/')
+        navigate('/profile')
 
       } catch (error) {
         toast.error(error?.data?.message || error.error)

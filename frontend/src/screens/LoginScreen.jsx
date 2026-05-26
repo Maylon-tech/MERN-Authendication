@@ -23,7 +23,7 @@ const LoginScreen = () => {
   
     useEffect(() => {
       if (userInfo) {
-        navigate('/')
+        navigate('/profile')
       }
     }, [navigate, userInfo])
   
@@ -32,7 +32,7 @@ const LoginScreen = () => {
       
       console.log("User Sign In right NOW..!")
       try {
-        const res = await login({ email, password })
+        const res = await login({ email, password }).unwrap()
         dispatch(setCredentials({ ...res }))
         navigate('/profile')
 

@@ -21,11 +21,11 @@ const RegisterScreen = () => {
     const [register, { isLoading }] = useRegisterMutation()
     const { userInfo } = useSelector((state) => state.auth) 
     
-  useEffect(() => {
-      if (userInfo) {
-        navigate('/')
-      }
-    }, [navigate, userInfo])
+    useEffect(() => {
+        if (userInfo) {
+          navigate('/profile')
+        }
+      }, [navigate, userInfo])
   
     const submitHandler = async (e) => {
       e.preventDefault()

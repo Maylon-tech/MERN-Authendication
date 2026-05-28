@@ -12,6 +12,7 @@ const router = express.Router()
 
  // users from controller - API route for authentication_Login
 router.post("/", registerUser)
+router.post("/auth", loginUser)
 router.post("/login", loginUser)
 router.post("/logout", logoutUser)
 router.route('/profile').get(protect, getUserProfile).put(protect, updateUserProfile)

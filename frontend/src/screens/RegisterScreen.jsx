@@ -35,7 +35,7 @@ const RegisterScreen = () => {
         try {
           const res = await register({ name, email, password }).unwrap()
           dispatch(setCredentials({ ...res }))
-          navigate('/')
+          navigate('/profile')
         } catch (error) {
           toast.error(error?.data?.message || error.error)
           console.log(error?.data?.message || error.error)
@@ -55,6 +55,7 @@ const RegisterScreen = () => {
                 type="text"
                 placeholder="Enter your name"
                 value={name}
+                required
                 onChange={(e) => setName(e.target.value)}
             >
                 
@@ -67,6 +68,7 @@ const RegisterScreen = () => {
                 type="email"
                 placeholder="Enter Email"
                 value={email}
+                required
                 onChange={(e) => setEmail(e.target.value)}
             >
                 
@@ -79,6 +81,7 @@ const RegisterScreen = () => {
                 type="password"
                 placeholder="Enter Password"
                 value={password}
+                required
                 onChange={(e) => setPassword(e.target.value)}
             >
                 
@@ -91,6 +94,7 @@ const RegisterScreen = () => {
                 type="password"
                 placeholder="Confirm your Password"
                 value={confirmPassword}
+                required
                 onChange={(e) => setConfirmPassword(e.target.value)}
             >
                 
@@ -98,13 +102,14 @@ const RegisterScreen = () => {
         </Form.Group>
 
         {
-          isLoading &&<>Loading the Homepage...</>
+          isLoading && <Loader />
         }
 
         <Button
           type='submit'
           variant='primary'
           className="mt-3"
+          disabled={isLoading}
         >
           Sign Up
         </Button>

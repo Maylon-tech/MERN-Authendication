@@ -19,17 +19,16 @@ const userSchema = mongoose.Schema({
     { timestamps: true }
 )
 
-// What is this ?????
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
-        next
+        return next()
     } 
 
     const salt = await bcrypt.genSalt(10)
-    this.password = bcrypt.hash(this.password, salt)
+    this.password = await bcrypt.hash(this.password, salt)
+
 })
 
-// What is this ?????
 userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password)
 }

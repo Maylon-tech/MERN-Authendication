@@ -9,47 +9,45 @@ const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
     const user = await User.findOne({ email })
 
-    if (user) {
+    if (user && (await user.matchPassword(password))) {
         generateToken(res, user._id)
-        res.status(201).json({
+        res.status(200).json({
             _id: user._id,
             name: user.name,
             email: user.email
         })
+        return
     } else {
         res.status(401)
         throw new Error("Invalid Email or Password.")
     }
-    res.status(401)
-    throw new Error('Something went wrong')
 })
 
 // @desc Register a new User
 // route POST /api/users  --  SIGNIN
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-    // Desestruturar o objeto para buscar no DODY (campos INPUT a ser preenchidos)
+   
     const { name, email, password } = req.body
-    // Buscado valores da api de acordo com o SCHEMA no DB com metodo FINDONE (Encontre um..)
     const userExists = await User.findOne({ email: email })
-    // Verificar se Existe mesmo
+   
     if (userExists) {
         res.status(400)
         throw new Error("User already exists.")
     }
 
-    // usa bcrypt para crytografar o password
     const user = await User.create({
         name,
         email,
         password
     })
     if (user) {
-        generateToken(res, user._id)
+        const token = generateToken(res, user._id)
         res.status(201).json({
             _id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            token: token
         })
     } else {
         res.status(400)
@@ -63,6 +61,8 @@ const registerUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
     res.cookie('jwt', '', {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
         expires: new Date(0),
     })
     res.status(200).json({ message: 'User Logged Out' })

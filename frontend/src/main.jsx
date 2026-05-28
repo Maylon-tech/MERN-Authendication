@@ -25,12 +25,12 @@ const router = createBrowserRouter(
       path='/'
       element={<App />}
     >
-      <Route path='/' index={true} element={<HomeScreen />} />
-      <Route path='/login' index={true} element={<LoginScreen />} />
-      <Route path='/register' index={true} element={<RegisterScreen />} />
+      <Route index={true} element={<HomeScreen />} />
+      <Route path='/login' element={<LoginScreen />} />
+      <Route path='/register' element={<RegisterScreen />} />
 
       <Route path='' element={<PrivateRoute />} >
-        <Route path='/profile' index={true} element={<ProfileScreen />} />
+        <Route path='/profile' element={<ProfileScreen />} />
       </Route>
     </Route>
   )

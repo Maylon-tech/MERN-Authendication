@@ -1,14 +1,24 @@
 import { Container } from "react-bootstrap"
+import Loader from "../components/Loader"
+import { useGetProfileQuery } from "../slices/usersApiSlice"
 
 
 const ProfileScreen = () => {
+  const { data: profile, isLoading, error } = useGetProfileQuery()
+
   return (
     <Container>
-      <h1>Welcome to Profile Screen for Auth Practice on Backend to Frontend.</h1>
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <p>{error?.data?.message || error.error}</p>
+      ) : (
+        <>
+          <h1>Welcome, {profile?.name}</h1>
 
-      <p>
-        The important to learn SignIn and SignOut with JWT and cookies parser. hashing the password into server.
-      </p>
+          <p>{profile?.email}</p>
+        </>
+      )}
     </Container>
   )
 }

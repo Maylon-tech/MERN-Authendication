@@ -15,8 +15,8 @@ const ProfileScreen = () => {
       ) : (
         <>
           <h1>Welcome, {profile?.name}</h1>
-
-          <p>{profile?.email}</p>
+          <h3>User Information</h3>
+          <p>EMAIL: {profile?.email}</p>
         </>
       )}
     </Container>

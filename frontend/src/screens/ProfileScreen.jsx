@@ -1,25 +1,109 @@
-import { Container } from "react-bootstrap"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Button, Form } from "react-bootstrap"
+import { toast } from "react-toastify"
+import FormContainer from "../components/FormContainer"
+import { useUpdateUserMutation } from "../slices/usersApiSlice"
 import Loader from "../components/Loader"
-import { useGetProfileQuery } from "../slices/usersApiSlice"
-
 
 const ProfileScreen = () => {
-  const { data: profile, isLoading, error } = useGetProfileQuery()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
-  return (
-    <Container>
-      {isLoading ? (
-        <Loader />
-      ) : error ? (
-        <p>{error?.data?.message || error.error}</p>
-      ) : (
-        <>
-          <h1>Welcome, {profile?.name}</h1>
-          <h3>User Information</h3>
-          <p>EMAIL: {profile?.email}</p>
-        </>
-      )}
-    </Container>
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  
+  const { userInfo } = useSelector((state) => state.auth)
+  const [updateProfile, { isLoading }] = useUpdateUserMutation()
+
+  useEffect(() => {
+    setName(userInfo?.name)
+    setEmail(userInfo?.email)
+  }, [userInfo.setName, userInfo.setEmail])
+  
+  const submitHandler = async (e) => {
+    e.preventDefault()
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.!")
+    } else {
+      try {
+        const res = await updateProfile({ 
+          _id: userInfo._id,
+          name, 
+          email, 
+          password 
+        }).unwrap()
+        dispatch(setCredentials({ ...res }))
+        toast.success("Profile updated successfully")
+      } catch(error) {
+        toast.error(error?.data?.message || error.error)
+      }
+    }}
+
+      return (
+    <FormContainer>
+      <h3>Update Profile Up</h3>
+      
+      <Form onSubmit={submitHandler}>
+        
+        <Form.Group className="my-2" controlId='name'>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            ></Form.Control>           
+        </Form.Group>
+        
+        <Form.Group className="my-2" controlId='email'>
+            <Form.Label>Email Address</Form.Label>
+            <Form.Control
+                type="email"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            ></Form.Control>
+        </Form.Group>
+
+        <Form.Group className="my-2" controlId='password'>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+                type="password"
+                placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            >                
+            </Form.Control>
+        </Form.Group>
+        
+        <Form.Group className="my-2" controlId='confirmPassword'>
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+                type="password"
+                placeholder="Confirm your Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+            >                
+            </Form.Control>
+        </Form.Group>
+
+        {
+          isLoading && <Loader /> 
+        }
+
+        <Button
+          type='submit'
+          variant='primary'
+          className="mt-3"
+          disabled={isLoading}
+        >
+          Update
+        </Button>
+      </Form>
+    </FormContainer>
   )
 }
 
